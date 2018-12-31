@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import io
 import base64
 from matplotlib import dates
+import tkinter
 
 def build_graph(data):
     img = io.BytesIO()
