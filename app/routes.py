@@ -22,7 +22,8 @@ def index():
         flash(f'''La note a été ajoutée!''')
         return redirect(url_for('index'))
     user = User.query.filter_by(username=current_user.username).first()
-    marks = user.grades
+    user_id = user.id
+    marks = Grade.query.filter_by(user_id=user_id).order_by(Grade.timestamp).all()
     subjects = []
     graph_data = dict()
     for m in marks:

@@ -27,9 +27,9 @@ def build_graph(data):
 
     for i in range(len(data)):
         plt.gca().xaxis.set_major_formatter(dates.DateFormatter('%d-%m-%Y'))
-        plt.gca().xaxis.set_major_locator(dates.DayLocator(interval=15))
-        plt.plot(x_values[i], y_values[i], marker='o', markerfacecolor='blue', markersize=12, color='skyblue', linewidth=4, label=subjects[i])
+        plt.plot(x_values[i], y_values[i], marker='o', markersize=8, linewidth=3, label=subjects[i])
         plt.gcf().autofmt_xdate()
+        plt.legend()
     plt.savefig(img, format='png')
     img.seek(0)
     graph_url = base64.b64encode(img.getvalue()).decode()
