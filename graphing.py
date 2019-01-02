@@ -1,9 +1,10 @@
 import matplotlib.pyplot as plt
 import io
 import base64
-from matplotlib import dates
+from matplotlib import dates, use
+import matplotlib
 
-matplotlib.use('Agg')
+use('Agg')
 
 def build_graph(data):
     img = io.BytesIO()
