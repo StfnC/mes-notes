@@ -1,14 +1,12 @@
-import matplotlib.pyplot as plt
 import io
 import base64
-from matplotlib import dates, use
 import matplotlib
 
-use('Agg')
+matplotlib.use('Agg')
 
 def build_graph(data):
     img = io.BytesIO()
-    plt.figure(figsize=(11,6))
+    matplotlib.pyplot.figure(figsize=(11,6))
     subjects = list(data.keys())
 
     def get_all_values(index, labels, data):
@@ -29,12 +27,12 @@ def build_graph(data):
     y_values = get_all_values(0, subjects, data)
 
     for i in range(len(data)):
-        plt.gca().xaxis.set_major_formatter(dates.DateFormatter('%d-%m-%Y'))
-        plt.plot(x_values[i], y_values[i], marker='o', markersize=8, linewidth=3, label=subjects[i])
-        plt.gcf().autofmt_xdate()
-        plt.legend()
-    plt.savefig(img, format='png')
+        matplotlib.pyplot.gca().xaxis.set_major_formatter(matplotlib.dates.DateFormatter('%d-%m-%Y'))
+        matplotlib.pyplot.plot(x_values[i], y_values[i], marker='o', markersize=8, linewidth=3, label=subjects[i])
+        matplotlib.pyplot.gcf().autofmt_xdate()
+        matplotlib.pyplot.legend()
+    matplotlib.pyplot.savefig(img, format='png')
     img.seek(0)
     graph_url = base64.b64encode(img.getvalue()).decode()
-    plt.close()
+    matplotlib.pyplot.close()
     return 'data:image/png;base64,{}'.format(graph_url)
