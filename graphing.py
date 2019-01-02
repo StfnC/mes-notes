@@ -3,6 +3,8 @@ import io
 import base64
 from matplotlib import dates
 
+matplotlib.use('Agg')
+
 def build_graph(data):
     img = io.BytesIO()
     plt.figure(figsize=(11,6))
