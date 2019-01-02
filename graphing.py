@@ -4,6 +4,7 @@ import base64
 import matplotlib
 
 matplotlib.use('Agg')
+plt.use('Agg')
 
 def build_graph(data):
     img = io.BytesIO()
