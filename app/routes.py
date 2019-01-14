@@ -71,7 +71,7 @@ def register():
         db.session.commit()
         flash(f'''Bienvenue Sur MesNotes, {form.username.data}''')
         return redirect(url_for('login'))
-    return render_template('register.html', title='Déconnexion', form=form)
+    return render_template('register.html', title='S\'enregistrer', form=form)
 
 @app.route('/cote_r', methods=['GET', 'POST'])
 def cote_r():

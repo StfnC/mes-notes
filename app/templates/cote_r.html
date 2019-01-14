@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block app_content %}
+    <h1>Cote R</h1>
+    <p>
+        Tout d'abord, dans le calcul de la cote R, il y a la cote Z.
+        La cote Z comprends trois élèments: la moyenne des notes de l'élève, la moyenne du groupe et l'écart type (l'écart moyen entre la moyenne et les notes).
+        Pour obtenir la cote Z, il faut soustraire la moyenne de l'élève par la moyenne du groupe et diviser le résultat par l'écart type.
+        Nous obtenons cette formule: Cote Z = (Moyenne élève - Moyenne groupe) / Écart type
+    </p>
+    <p>
+        Viens ensuite l'indice de force du groupe (IFG). Il sert à, comme son nom l'indique, nous donner une idée de la force du groupe.
+        Un élève qui a 85 dans un groupe d'élèves forts devrait avoir une meilleur cote qu'un élève ayany obtenu la même note dans un groupe
+        d'élève plus faible.
+        Pour calculer l'IFG, il faut faire la moyenne des notes de secondaire 4 et 5 pour chaque élève du groupe et ensuite faire la moyenne de ces notes.
+        On appele cette partie la moyenne des MPS (moyenne pondérée du secondaire). On soustrait ensuite 75 à la moyenne des MPS et on divise le résultat par 14.
+        Nous obtenons alors l'indice de force de groupe.
+        Sous forme de formule: IFG = (Moyenne des MPS - 75) / 14
+    </p>
+    <p>
+        Nous avons maintenant tout ce qu'il nous faut pour calculer la cote R. Il faut maintenant additioner la cote Z, l'IFG, ajouter cinq et multiplier le tout par cinq.
+        Cela nous donne cette formule: Cote R = (Cote Z + IFG + 5) x 5
+    </p>
+    <p>
+        Il faut comprendre que le nombre que vous voyez au-dessous n'est qu'une estimation. Vous avez pu le constater, l'indice de force de groupe nécessite des données auquelles je n'ai pas accès.
+        Pour arriver à cette estimation, je fait la moyenne de vos notes avec celles qui sont sur le site. Pour la moyenne du groupe et la moyenne des MPS, j'utilise la valeur de 80 et pour l'écart type, j'utilise 8.
+        Vous pouvez jouer avec ces paramètres plus bas.
+    </p>
+    <h4>
+        Estimation: {{ r_score }}
+    </h4>
+    <h2>Modifier les différents paramètres</h2>
+    <div class="row">
+        <div class="col-md-4">
+            {{ wtf.quick_form(form) }}
+        </div>
+    </div>
+{% endblock %}
