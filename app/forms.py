@@ -40,3 +40,9 @@ class GradeForm(FlaskForm):
     mark = IntegerField('Note (pourcentage)', validators=[DataRequired(), NumberRange(min=0)])
     timestamp = DateField('Quand as-tu reçu la note?', format='%Y-%m-%d')
     submit = SubmitField('Ajouter')
+
+class RScoreForm(FlaskForm):
+    group_average = IntegerField('Moyenne du groupe', default=80)
+    std_deviation = IntegerField('Écart type', default=8)
+    average_mps = IntegerField('Moyenne des MPS', default=80)
+    submit = SubmitField('Envoyer')

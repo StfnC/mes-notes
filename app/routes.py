@@ -1,6 +1,6 @@
 from flask import render_template, flash, redirect, url_for, request
 from app import app, db
-from app.forms import LoginForm, RegistrationForm, GradeForm
+from app.forms import LoginForm, RegistrationForm, GradeForm, RScoreForm
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, Grade
 from werkzeug.urls import url_parse
@@ -34,7 +34,6 @@ def index():
             graph_data[s].append([g, t])
         else:
             graph_data[s] = [[g, t]]
-    print(graph_data)
     graph = build_graph(graph_data)
     return render_template('index.html', title='Accueil', user=current_user.username, form=form, graph=graph)
 
@@ -73,3 +72,26 @@ def register():
         flash(f'''Bienvenue Sur MesNotes, {form.username.data}''')
         return redirect(url_for('login'))
     return render_template('register.html', title='Déconnexion', form=form)
+
+@app.route('/cote_r', methods=['GET', 'POST'])
+def cote_r():
+    def average(marks):
+        return sum(marks) / len(marks)
+    def r_score(grades, group_average=80, std_deviation=8, average_mps=80):
+        average_grade = average(grades)
+        z_score = ((average_grade - group_average) / std_deviation)
+        ifg = ((average_mps - 75) / 14)
+        return round((z_score + ifg + 5) * 5, 2)
+    form = RScoreForm()
+    grades = Grade.query.all()
+    marks = []
+    for grade in grades:
+        marks.append(int(grade.mark))
+    if form.validate_on_submit():
+        group_average = form.group_average.data
+        std_deviation = form.std_deviation.data
+        average_mps = form.average_mps.data
+        r_score = r_score(grades=marks, group_average=group_average, std_deviation=std_deviation, average_mps=average_mps)
+    else:
+        r_score = r_score(grades=marks)
+    return render_template('cote_r.html', title='Cote R', r_score=r_score, form=form)
