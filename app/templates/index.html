@@ -4,8 +4,8 @@
 {% block app_content %}
     <h1>Bienvenue, {{ user }}</h1>
     <br>
-    <div class="imgbox">
-        <img class="center-fit" src="{{ graph }}">
+    <div>
+        <img class="img-responsive" src="{{ graph }}">
     </div>
     <br>
     <h2>Ajouter une Note</h2>
@@ -14,4 +14,5 @@
             {{ wtf.quick_form(form) }}
         </div>
     </div>
+    <br>
 {% endblock %}
