@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 def build_graph(data):
     img = io.BytesIO()
-    plt.figure(figsize=(11,6))
+    plt.figure(figsize=(11,6.5))
     subjects = list(data.keys())
 
     def get_all_values(index, labels, data):

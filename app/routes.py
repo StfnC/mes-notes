@@ -1,12 +1,13 @@
 from flask import render_template, flash, redirect, url_for, request
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, GradeForm, RScoreForm
+from app.forms import ResetPasswordRequestForm, ResetPasswordForm
+from app.email import send_password_reset_email
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, Grade
 from werkzeug.urls import url_parse
 from datetime import datetime
 from graphing import build_graph
-
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
@@ -22,8 +23,7 @@ def index():
         flash(f'''La note a été ajoutée!''')
         return redirect(url_for('index'))
     user = User.query.filter_by(username=current_user.username).first()
-    user_id = user.id
-    marks = Grade.query.filter_by(user_id=user_id).order_by(Grade.timestamp).all()
+    marks = Grade.query.filter_by(user_id=user.id).order_by(Grade.timestamp).all()
     subjects = []
     graph_data = dict()
     for m in marks:
@@ -69,9 +69,38 @@ def register():
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
-        flash(f'''Bienvenue Sur MesNotes, {form.username.data}''')
+        flash(f'''Bienvenue sur MesNotes, {form.username.data}''')
         return redirect(url_for('login'))
     return render_template('register.html', title='S\'enregistrer', form=form)
+
+@app.route('/reset_password_request', methods=['GET', 'POST'])
+def reset_password_request():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = ResetPasswordRequestForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user:
+            send_password_reset_email(user)
+        flash('Vérifiez votre email pour les instructions du changement de mot de passe.')
+        return redirect(url_for('login'))
+    return render_template('reset_password_request.html', title='Demande changement de mot de passe', form=form)
+
+@app.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    user = User.verify_reset_password_token(token)
+    if not user:
+        return redirect(url_for('login'))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        user.set_password(form.password.data)
+        db.session.commit()
+        flash('Votre mot de passe à été changé.')
+        return redirect(url_for('login'))
+    return render_template('reset_password.html', title='Changer mot de passe', form=form)
+
 
 @app.route('/cote_r', methods=['GET', 'POST'])
 def cote_r():
@@ -95,3 +124,9 @@ def cote_r():
     else:
         r_score = r_score(grades=marks)
     return render_template('cote_r.html', title='Cote R', r_score=r_score, form=form)
+
+@app.route('/notes', methods=['GET', 'POST', 'DELETE'])
+def notes():
+    user = User.query.filter_by(username=current_user.username).first()
+    grades = Grade.query.filter_by(user_id=user.id).order_by(Grade.timestamp).all()
+    return render_template('notes.html', title='Notes', grades=grades)

@@ -28,6 +28,17 @@ class RegistrationForm(FlaskForm):
         if user is not None:
             raise ValidationError('Cette adresse email est déjà utilisée.')
 
+class ResetPasswordRequestForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Demander un changement de mot de passe')
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField('Nouveau mot de passe', validators=[DataRequired()])
+    password_repeat = PasswordField(
+        'Réécris ton mot de passe', validators=[DataRequired(), EqualTo('password')]
+        )
+    submit = SubmitField('Changer mot de passe')
+
 class GradeForm(FlaskForm):
     subject_choices = [
                     ('Anglais', 'Anglais'), ('Art Dramatique', 'Art Dramatique'), ('Arts Plastiques', 'Arts Plastiques'),
