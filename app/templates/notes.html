@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
+    <div class="container">
+        {% for grade in grades %}
+            <div class="card border-info mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">{{ grade.subject }}</h5>
+                    <p class="card-text">{{ grade.mark }}</p>
+                    <p class="card-text">{{ grade.timestamp }}</p>
+                    <a href="#" class="btn btn-primary">Modifier</a><div class="float-right"><a href="#" class="btn btn-danger">Supprimer</a></div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
