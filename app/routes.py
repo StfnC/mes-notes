@@ -106,8 +106,7 @@ def reset_password(token):
 def cote_r():
     def average(marks):
         return sum(marks) / len(marks)
-    def r_score(grades, group_average=80, std_deviation=8, average_mps=80):
-        average_grade = average(grades)
+    def r_score(average_grade, group_average=80, std_deviation=8, average_mps=80):
         z_score = ((average_grade - group_average) / std_deviation)
         ifg = ((average_mps - 75) / 14)
         return round((z_score + ifg + 5) * 5, 2)
@@ -116,13 +115,16 @@ def cote_r():
     marks = []
     for grade in grades:
         marks.append(int(grade.mark))
+    form.student_average.default = round(average(marks), 2)
     if form.validate_on_submit():
+        student_average = form.student_average.data
         group_average = form.group_average.data
         std_deviation = form.std_deviation.data
         average_mps = form.average_mps.data
-        r_score = r_score(grades=marks, group_average=group_average, std_deviation=std_deviation, average_mps=average_mps)
+        r_score = r_score(average_grade=student_average, group_average=group_average, std_deviation=std_deviation, average_mps=average_mps)
     else:
-        r_score = r_score(grades=marks)
+        r_score = r_score(average_grade=average(marks))
+    form.process()
     return render_template('cote_r.html', title='Cote R', r_score=r_score, form=form)
 
 @app.route('/notes', methods=['GET', 'POST', 'DELETE'])

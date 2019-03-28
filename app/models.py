@@ -43,7 +43,7 @@ def user_loader(id):
 
 class Grade(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    mark = db.Column(db.Integer, index=True)
+    mark = db.Column(db.Float, index=True)
     timestamp = db.Column(db.Integer, index=True, default=datetime.utcnow)
     subject = db.Column(db.String(), index=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))

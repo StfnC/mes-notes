@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField, SelectField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, FloatField, SelectField
 from wtforms.fields.html5 import DateField
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo, Length, NumberRange, InputRequired
 from app.models import User
@@ -48,12 +48,13 @@ class GradeForm(FlaskForm):
                     ('Physique', 'Physique'), ('Sciences et Technologie', 'Sciences et Technologie'), ('Autre', 'Autre')]
 
     subject = SelectField('Matière', choices=subject_choices, validators=[InputRequired()])
-    mark = IntegerField('Note (pourcentage)', validators=[DataRequired(), NumberRange(min=0)])
+    mark = FloatField('Note (pourcentage)', validators=[DataRequired(), NumberRange(min=0)])
     timestamp = DateField('Quand as-tu reçu la note?', format='%Y-%m-%d')
     submit = SubmitField('Ajouter')
 
 class RScoreForm(FlaskForm):
-    group_average = IntegerField('Moyenne du groupe', default=80)
-    std_deviation = IntegerField('Écart type', default=8)
-    average_mps = IntegerField('Moyenne des MPS', default=80)
+    student_average = FloatField('Ta moyenne', default=80)
+    group_average = FloatField('Moyenne du groupe', default=80)
+    std_deviation = FloatField('Écart type', default=8)
+    average_mps = FloatField('Moyenne des MPS', default=80)
     submit = SubmitField('Envoyer')
