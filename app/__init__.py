@@ -9,7 +9,6 @@ from flask_login import LoginManager
 from flask_mail import Mail
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
-from flask_material import Material
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -20,7 +19,6 @@ login.login_view = 'login'
 mail = Mail(app)
 bootstrap = Bootstrap(app)
 moment = Moment(app)
-material = Material(app)
 
 from app import routes, models, errors
 
