@@ -111,10 +111,14 @@ def cote_r():
         ifg = ((average_mps - 75) / 14)
         return round((z_score + ifg + 5) * 5, 2)
     form = RScoreForm()
-    grades = Grade.query.all()
-    marks = []
-    for grade in grades:
-        marks.append(int(grade.mark))
+    if current_user.is_authenticated:
+        user = User.query.filter_by(username=current_user.username).first()
+        grades = Grade.query.filter_by(user_id=user.id).all()
+        marks = []
+        for grade in grades:
+            marks.append(int(grade.mark))
+    else:
+        marks = [85]
     form.student_average.default = round(average(marks), 2)
     if form.validate_on_submit():
         student_average = form.student_average.data
@@ -128,6 +132,7 @@ def cote_r():
     return render_template('cote_r.html', title='Cote R', r_score=r_score, form=form)
 
 @app.route('/notes', methods=['GET', 'POST', 'DELETE'])
+@login_required
 def notes():
     user = User.query.filter_by(username=current_user.username).first()
     grades = Grade.query.filter_by(user_id=user.id).order_by(Grade.timestamp).all()
