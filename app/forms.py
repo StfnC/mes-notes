@@ -57,3 +57,16 @@ class RScoreForm(FlaskForm):
     std_deviation = IntegerField('Écart type', default=8)
     average_mps = IntegerField('Moyenne des MPS', default=80)
     submit = SubmitField('Envoyer')
+
+class EditGradeForm(FlaskForm):
+    subject_choices = [
+                    ('Anglais', 'Anglais'), ('Art Dramatique', 'Art Dramatique'), ('Arts Plastiques', 'Arts Plastiques'),
+                    ('Chimie', 'Chimie'), ('Éducation Financière', 'Éducation Financière'), ('Éducation Physique', 'Éducation Physique'),
+                    ('Espagnol', 'Espagnol'), ('Éthique et Culture Religieuse', 'Éthique et Culture Religieuse'), ('Français', 'Français'), ('Géographie', 'Géographie'),
+                    ('Histoire', 'Histoire'), ('Mathématiques', 'Mathématiques'), ('Monde Contemporain', 'Monde Contemporain'), ('Multimédia', 'Multimédia'), ('Musique', 'Musique'),
+                    ('Physique', 'Physique'), ('Sciences et Technologie', 'Sciences et Technologie'), ('Autre', 'Autre')]
+
+    subject = SelectField('Matière', choices=subject_choices, validators=[InputRequired()])
+    mark = IntegerField('Note (pourcentage)', validators=[DataRequired(), NumberRange(min=0)])
+    timestamp = DateField('Quand as-tu reçu la note?', format='%Y-%m-%d')
+    submit = SubmitField('Modifier')

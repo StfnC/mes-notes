@@ -7,7 +7,9 @@
             <br>
             <p>Date: {{ grade.timestamp }}</p>
             <br>
-            <a href="#" class="btn btn-primary">Modifier</a><a href="#" class="btn btn-danger">Supprimer</a>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#edit-grade-modal-{{ grade.id }}">Modifier</button>
+            {% include "edit-grade-modal.html" %}
+            <button type="submit" class="btn btn-danger pull-right">Supprimer</button>
         </td>
     </tr>
 </table>

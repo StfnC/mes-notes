@@ -125,7 +125,7 @@ def cote_r():
         r_score = r_score(grades=marks)
     return render_template('cote_r.html', title='Cote R', r_score=r_score, form=form)
 
-@app.route('/notes', methods=['GET', 'POST', 'DELETE'])
+@app.route('/notes', methods=['GET', 'POST'])
 def notes():
     user = User.query.filter_by(username=current_user.username).first()
     grades = Grade.query.filter_by(user_id=user.id).order_by(Grade.timestamp).all()
