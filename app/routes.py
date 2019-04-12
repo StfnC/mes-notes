@@ -154,7 +154,7 @@ def update_grade(grade_id):
     else:
         if request.method == 'POST':
             grade.subject = str(request.form.get('subject'))
-            grade.mark = int(request.form.get('mark'))
+            grade.mark = float(request.form.get('mark'))
             grade.normal_timestamp = request.form.get('timestamp')
             grade.reformat_date(request.form.get('timestamp'))
             db.session.commit()
