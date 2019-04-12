@@ -125,6 +125,7 @@ def cote_r():
         r_score = r_score(grades=marks)
     return render_template('cote_r.html', title='Cote R', r_score=r_score, form=form)
 
+@login_required
 @app.route('/notes', methods=['GET', 'POST'])
 def notes():
     user = User.query.filter_by(username=current_user.username).first()
@@ -133,3 +134,21 @@ def notes():
         if grade.normal_timestamp == None:
             grade.set_normal_timestamp(grade.timestamp)
     return render_template('notes.html', title='Notes', grades=grades)
+
+@login_required
+@app.route('/update_grade/<grade_id>', methods=['GET', 'POST'])
+def update_grade(grade_id):
+    grade = Grade.query.filter_by(id=grade_id).first()
+    if grade.student != current_user:
+        return redirect(url_for('notes'))
+    else:
+        if request.method == 'POST':
+            grade.subject = request.form.get('subject')
+            grade.mark = request.form.get('mark')
+            grade.normal_timestamp = request.form.get('timestamp')
+            grade.reformat_date(request.form.get('timestamp'))
+            db.session.commit()
+            flash('La note à été modifiée')
+        elif request.method == 'GET':
+            return redirect(url_for('notes'))
+    return redirect(url_for('notes'))

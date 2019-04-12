@@ -3,7 +3,8 @@
         <div class="modal-content">
             <div class="modal-body">
                 <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-                <form action="" method="">
+                <form action="{{ url_for('update_grade', grade_id=grade.id) }}" method="post">
+                    {{ csrf_token }}
                     <div class="form-group">
                         <label for="edit_subject">Name</label>
                         <select class="form-control" id="edit_subject" name="subject" required>
