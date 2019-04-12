@@ -5,7 +5,7 @@
             <br>
             <p>Note: {{ grade.mark }}</p>
             <br>
-            <p>Date: {{ grade.timestamp }}</p>
+            <p>Date: {{ grade.normal_timestamp }}</p>
             <br>
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#edit-grade-modal-{{ grade.id }}">Modifier</button>
             {% include "edit-grade-modal.html" %}

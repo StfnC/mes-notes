@@ -5,7 +5,7 @@ from app import db, login, app
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from hashlib import md5
-from matplotlib.dates import datestr2num
+from matplotlib.dates import datestr2num, num2date
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -45,6 +45,7 @@ class Grade(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     mark = db.Column(db.Integer, index=True)
     timestamp = db.Column(db.Integer, index=True, default=datetime.utcnow)
+    normal_timestamp = db.Column(db.String(), index=True)
     subject = db.Column(db.String(), index=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
@@ -53,3 +54,7 @@ class Grade(db.Model):
 
     def reformat_date(self, date):
         self.timestamp = datestr2num(date)
+
+    def set_normal_timestamp(self, date):
+        date_object = num2date(date)
+        self.normal_timestamp = date_object.strftime('%Y-%m-%d')

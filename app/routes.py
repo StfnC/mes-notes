@@ -15,9 +15,9 @@ from graphing import build_graph
 def index():
     form = GradeForm()
     if form.validate_on_submit():
-        grade = Grade(mark=form.mark.data, subject=form.subject.data, student=current_user)
-        timestamp = str(form.timestamp.data)
-        grade.reformat_date(timestamp)
+        grade = Grade(mark=form.mark.data, subject=form.subject.data, timestamp=form.timestamp.data, student=current_user)
+        mpl_timestamp = str(form.timestamp.data)
+        grade.reformat_date(mpl_timestamp)
         db.session.add(grade)
         db.session.commit()
         flash(f'''La note a été ajoutée!''')
@@ -129,4 +129,7 @@ def cote_r():
 def notes():
     user = User.query.filter_by(username=current_user.username).first()
     grades = Grade.query.filter_by(user_id=user.id).order_by(Grade.timestamp).all()
+    for grade in grades:
+        if grade.normal_timestamp == None:
+            grade.set_normal_timestamp(grade.timestamp)
     return render_template('notes.html', title='Notes', grades=grades)
