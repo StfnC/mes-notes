@@ -143,12 +143,24 @@ def update_grade(grade_id):
         return redirect(url_for('notes'))
     else:
         if request.method == 'POST':
-            grade.subject = request.form.get('subject')
-            grade.mark = request.form.get('mark')
+            grade.subject = str(request.form.get('subject'))
+            grade.mark = int(request.form.get('mark'))
             grade.normal_timestamp = request.form.get('timestamp')
             grade.reformat_date(request.form.get('timestamp'))
             db.session.commit()
-            flash('La note à été modifiée')
+            flash('La note a été modifiée')
         elif request.method == 'GET':
             return redirect(url_for('notes'))
+    return redirect(url_for('notes'))
+
+@login_required
+@app.route('/delete_grade/<grade_id>', methods=['GET', 'POST'])
+def delete_grade(grade_id):
+    grade = Grade.query.filter_by(id=grade_id).first()
+    if grade.student != current_user:
+        return redirect(url_for('notes'))
+    else:
+        db.session.delete(grade)
+        db.session.commit()
+        flash('La note a été supprimée')
     return redirect(url_for('notes'))
