@@ -15,9 +15,9 @@ from graphing import build_graph
 def index():
     form = GradeForm()
     if form.validate_on_submit():
-        grade = Grade(mark=form.mark.data, subject=form.subject.data, student=current_user)
-        timestamp = str(form.timestamp.data)
-        grade.reformat_date(timestamp)
+        grade = Grade(mark=form.mark.data, subject=form.subject.data, timestamp=form.timestamp.data, student=current_user)
+        mpl_timestamp = str(form.timestamp.data)
+        grade.reformat_date(mpl_timestamp)
         db.session.add(grade)
         db.session.commit()
         flash(f'''La note a été ajoutée!''')
@@ -127,8 +127,46 @@ def cote_r():
     form.process()
     return render_template('cote_r.html', title='Cote R', r_score=r_score, form=form)
 
-@app.route('/notes', methods=['GET', 'POST', 'DELETE'])
+@login_required
+@app.route('/notes', methods=['GET', 'POST'])
 def notes():
     user = User.query.filter_by(username=current_user.username).first()
-    grades = Grade.query.filter_by(user_id=user.id).order_by(Grade.timestamp).all()
-    return render_template('notes.html', title='Notes', grades=grades)
+    page = request.args.get('page', 1, type=int)
+    grades = Grade.query.filter_by(user_id=user.id).order_by(Grade.timestamp.desc()).paginate(
+             page, app.config['GRADES_PER_PAGE'], False)
+    next_url = url_for('notes', page=grades.next_num) if grades.has_next else None
+    prev_url = url_for('notes', page=grades.prev_num) if grades.has_prev else None
+    for grade in grades.items:
+        if grade.normal_timestamp == None:
+            grade.set_normal_timestamp(grade.timestamp)
+    return render_template('notes.html', title='Notes', grades=grades.items, next_url=next_url, prev_url=prev_url)
+
+@login_required
+@app.route('/update_grade/<grade_id>', methods=['GET', 'POST'])
+def update_grade(grade_id):
+    grade = Grade.query.filter_by(id=grade_id).first()
+    if grade.student != current_user:
+        return redirect(url_for('notes'))
+    else:
+        if request.method == 'POST':
+            grade.subject = str(request.form.get('subject'))
+            grade.mark = int(request.form.get('mark'))
+            grade.normal_timestamp = request.form.get('timestamp')
+            grade.reformat_date(request.form.get('timestamp'))
+            db.session.commit()
+            flash('La note a été modifiée')
+        elif request.method == 'GET':
+            return redirect(url_for('notes'))
+    return redirect(url_for('notes'))
+
+@login_required
+@app.route('/delete_grade/<grade_id>', methods=['GET', 'POST'])
+def delete_grade(grade_id):
+    grade = Grade.query.filter_by(id=grade_id).first()
+    if grade.student != current_user:
+        return redirect(url_for('notes'))
+    else:
+        db.session.delete(grade)
+        db.session.commit()
+        flash('La note a été supprimée')
+    return redirect(url_for('notes'))

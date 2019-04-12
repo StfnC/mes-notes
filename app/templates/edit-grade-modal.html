@@ -1,0 +1,47 @@
+<div class="modal fade" id="edit-grade-modal-{{ grade.id }}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                <form action="{{ url_for('update_grade', grade_id=grade.id) }}" method="post">
+                    {{ csrf_token }}
+                    <div class="form-group">
+                        <label for="edit_subject">Name</label>
+                        <select class="form-control" id="edit_subject" name="subject" required>
+                            <option value="Anglais" {% if 'Anglais' == grade.subject: %} selected="selected" {% endif %}>Anglais</option>
+                            <option value="Art Dramatique" {% if 'Art Dramatique' == grade.subject: %} selected="selected" {% endif %}>Art Dramatique</option>
+                            <option value="Arts Plastiques" {% if 'Arts Plastiques' == grade.subject: %} selected="selected" {% endif %}>Arts Plastiques</option>
+                            <option value="Chimie" {% if 'Chimie' == grade.subject: %} selected="selected" {% endif %}>Chimie</option>
+                            <option value="Éducation Financière" {% if 'Éducation Financière' == grade.subject: %} selected="selected" {% endif %}>Éducation Financière</option>
+                            <option value="Éducation Physique" {% if 'Éducation Physique' == grade.subject: %} selected="selected" {% endif %}>Éducation Physique</option>
+                            <option value="Espagnol" {% if 'Espagnol' == grade.subject: %} selected="selected" {% endif %}>Espagnol</option>
+                            <option value="Éthique et Culture Religieuse" {% if 'Éthique et Culture Religieuse' == grade.subject: %} selected="selected" {% endif %}>Éthique et Culture Religieuse</option>
+                            <option value="Français" {% if 'Français' == grade.subject: %} selected="selected" {% endif %}>Français</option>
+                            <option value="Géographie" {% if 'Géographie' == grade.subject: %} selected="selected" {% endif %}>Géographie</option>
+                            <option value="Histoire" {% if 'Histoire' == grade.subject: %} selected="selected" {% endif %}>Histoire</option>
+                            <option value="Mathématiques" {% if 'Mathématiques' == grade.subject: %} selected="selected" {% endif %}>Mathématiques</option>
+                            <option value="Monde Contemporain" {% if 'Monde Contemporain' == grade.subject: %} selected="selected" {% endif %}>Monde Contemporain</option>
+                            <option value="Multimédia" {% if 'Multimédia' == grade.subject: %} selected="selected" {% endif %}>Multimédia</option>
+                            <option value="Musique" {% if 'Musique' == grade.subject: %} selected="selected" {% endif %}>Musique</option>
+                            <option value="Physique" {% if 'Physique' == grade.subject: %} selected="selected" {% endif %}>Physique</option>
+                            <option value="Sciences et Technologie" {% if 'Sciences et Technologie' == grade.subject: %} selected="selected" {% endif %}>Sciences et Technologie</option>
+                            <option value="Autre" {% if 'Autre' == grade.subject: %} selected="selected" {% endif %}>Autre</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit_mark">Note</label>
+                        <input type="text" class="form-control" id="edit_mark" name="mark" value="{{ grade.mark }}" required/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit_timestamp">Date</label>
+                        <input type="date" class="form-control" id="edit_timestamp" name="timestamp" value="{{ grade.normal_timestamp }}" required/>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Modifier</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

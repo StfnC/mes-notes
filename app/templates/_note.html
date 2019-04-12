@@ -1,0 +1,18 @@
+<table class="table table-hover">
+    <tr>
+        <td>
+            <p>Matière: {{ grade.subject }}</p>
+            <br>
+            <p>Note: {{ grade.mark }}</p>
+            <br>
+            <p>Date: {{ grade.normal_timestamp }}</p>
+            <br>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#edit-grade-modal-{{ grade.id }}">Modifier</button>
+            {% include "edit-grade-modal.html" %}
+            <form action="{{ url_for('delete_grade', grade_id=grade.id) }}" method="post">
+                {{ csrf_token }}
+                <button type="submit" class="btn btn-danger pull-right">Supprimer</button>
+            </form>
+        </td>
+    </tr>
+</table>
