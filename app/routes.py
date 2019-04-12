@@ -105,6 +105,8 @@ def reset_password(token):
 @app.route('/cote_r', methods=['GET', 'POST'])
 def cote_r():
     def average(marks):
+        if len(marks) == 0:
+            marks = [85]
         return sum(marks) / len(marks)
     def r_score(average_grade, group_average=80, std_deviation=8, average_mps=80):
         z_score = ((average_grade - group_average) / std_deviation)
@@ -116,7 +118,7 @@ def cote_r():
         grades = Grade.query.filter_by(user_id=user.id).all()
         marks = []
         for grade in grades:
-            marks.append(int(grade.mark))
+            marks.append(float(grade.mark))
     else:
         marks = [85]
     form.student_average.default = round(average(marks), 2)
