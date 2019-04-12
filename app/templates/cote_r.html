@@ -4,28 +4,28 @@
 {% block app_content %}
     <h1>Cote R</h1>
     <p class="flow-text">
-        Tout d'abord, dans le calcul de la cote R, il y a la cote Z.
-        La cote Z comprends trois éléments: la moyenne des notes de l'élève, la moyenne du groupe et l'écart type (l'écart moyen entre la moyenne et les notes).
-        Pour obtenir la cote Z, il faut soustraire la moyenne de l'élève par la moyenne du groupe et diviser le résultat par l'écart type.
-        Nous obtenons cette formule: Cote Z = (Moyenne élève - Moyenne groupe) / Écart type
+        Tout d'abord, dans le calcul de la Cote R, il y a la Cote Z.
+        La Cote Z comprends trois éléments: la moyenne des notes de l'élève, la moyenne du groupe et l'écart type (l'écart moyen entre la moyenne du groupe et les notes des élèves).
+        Pour obtenir la Cote Z, il faut soustraire la moyenne de l'élève par la moyenne du groupe et diviser le résultat par l'écart type.
+        Nous obtenons cette formule: <strong>Cote Z = (Moyenne élève - Moyenne groupe) / Écart type</strong>
     </p>
     <p class="flow-text">
-        Viens ensuite l'indice de force du groupe (IFG). Il sert à, comme son nom l'indique, nous donner une idée de la force du groupe.
+        Viens ensuite l'indice de force du groupe (IFG). Il sert à, comme son nom l'indique, donner une idée de la force du groupe.
         Un élève qui a 85 dans un groupe d'élèves forts devrait avoir une meilleure cote qu'un élève ayant obtenu la même note dans un groupe
-        d'élève plus faible.
-        Pour calculer l'IFG, il faut faire la moyenne des notes de secondaire 4 et 5 pour chaque élève du groupe et ensuite faire la moyenne de ces notes.
-        On appelle cette partie la moyenne des MPS (moyenne pondérée du secondaire). On soustrait ensuite 75 à la moyenne des MPS et on divise le résultat par 14.
-        Nous obtenons alors l'indice de force de groupe.
-        Sous forme de formule: IFG = (Moyenne des MPS - 75) / 14
+        d'élèves moins forts.
+        Pour calculer l'IFG, il faut la moyenne des notes de secondaire 4 et 5 pour chaque élève du groupe et ensuite faire la moyenne de ces notes.
+        On appelle cette partie la moyenne des MPS (moyenne pondérée des moyennes du secondaire). On soustrait ensuite 75 à la moyenne des MPS et on divise le résultat par 14.
+        On obtient alors l'indice de force de groupe.
+        <br>Sous forme de formule: <strong>IFG = (Moyenne des MPS - 75) / 14</strong>
     </p>
     <p class="flow-text">
-        Nous avons maintenant tout ce qu'il nous faut pour calculer la cote R. Il faut maintenant additionner la cote Z, l'IFG, ajouter cinq et multiplier le tout par cinq.
-        Cela nous donne cette formule: Cote R = (Cote Z + IFG + 5) x 5
+        On a maintenant tout ce qu'il nous faut pour calculer la Cote R. Il faut additionner la Cote Z, l'IFG, ajouter cinq et multiplier le tout par cinq.
+        <br>Ça nous donne cette formule: <strong>Cote R = (Cote Z + IFG + 5) x 5</strong>
     </p>
     <p class="flow-text">
-        Il faut comprendre que le nombre que vous voyez au-dessous n'est qu'une estimation. Vous avez pu le constater, l'indice de force de groupe nécessite des données auxquelles je n'ai pas accès.
-        Pour arriver à cette estimation, je fait la moyenne de vos notes avec celles qui sont sur le site. Pour la moyenne du groupe et la moyenne des MPS, j'utilise la valeur de 80 et pour l'écart type, j'utilise 8.
-        Vous pouvez jouer avec ces paramètres plus bas.
+        Il faut comprendre que le nombre en dessous n'est qu'une estimation. Tu as pu le constater, l'indice de force de groupe nécessite des données auxquelles je n'ai pas accès.
+        Pour arriver à cette estimation, je fait la moyenne de tes notes avec celles qui sont sur le site. Pour la moyenne du groupe et la moyenne des MPS, j'utilise la valeur de 80 et pour l'écart type, j'utilise 8.
+        Tu peux jouer avec ces paramètres plus bas.
     </p>
     <br>
     <h2>

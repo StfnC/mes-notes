@@ -6,7 +6,7 @@
                 <form action="{{ url_for('update_grade', grade_id=grade.id) }}" method="post">
                     {{ csrf_token }}
                     <div class="form-group">
-                        <label for="edit_subject">Name</label>
+                        <label for="edit_subject">Matière</label>
                         <select class="form-control" id="edit_subject" name="subject" required>
                             <option value="Anglais" {% if 'Anglais' == grade.subject: %} selected="selected" {% endif %}>Anglais</option>
                             <option value="Art Dramatique" {% if 'Art Dramatique' == grade.subject: %} selected="selected" {% endif %}>Art Dramatique</option>
