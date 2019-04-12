@@ -131,13 +131,8 @@ def cote_r():
     form.process()
     return render_template('cote_r.html', title='Cote R', r_score=r_score, form=form)
 
-<<<<<<< HEAD
 @login_required
 @app.route('/notes', methods=['GET', 'POST'])
-=======
-@app.route('/notes', methods=['GET', 'POST', 'DELETE'])
-@login_required
->>>>>>> a363c034ee77b350f809e0b393887fd5c0509f3c
 def notes():
     user = User.query.filter_by(username=current_user.username).first()
     page = request.args.get('page', 1, type=int)
