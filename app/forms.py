@@ -53,8 +53,8 @@ class GradeForm(FlaskForm):
     submit = SubmitField('Ajouter')
 
 class RScoreForm(FlaskForm):
-    student_average = FloatField('Ta moyenne', default=80)
-    group_average = FloatField('Moyenne du groupe', default=80)
-    std_deviation = FloatField('Écart type', default=8)
-    average_mps = FloatField('Moyenne des MPS', default=80)
+    student_average = FloatField('Ta moyenne', default=80.0)
+    group_average = FloatField('Moyenne du groupe', default=80.0)
+    std_deviation = FloatField('Écart type', default=8.0)
+    average_mps = FloatField('Moyenne des MPS', default=80.0)
     submit = SubmitField('Envoyer')
