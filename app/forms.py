@@ -5,17 +5,17 @@ from wtforms.validators import DataRequired, ValidationError, Email, EqualTo, Le
 from app.models import User
 
 class LoginForm(FlaskForm):
-    username = StringField('Nom d\'utilisateur', validators=[DataRequired()])
-    password = PasswordField('Mot de passe', validators=[DataRequired()])
+    username = StringField('Nom d\'utilisateur', validators=[DataRequired(), Length(max=50)])
+    password = PasswordField('Mot de passe', validators=[DataRequired(), Length(max=50)])
     remember_me = BooleanField('Se Souvenir de Moi')
     sign_in = SubmitField('Se Connecter')
 
 class RegistrationForm(FlaskForm):
-    username = StringField('Nom d\'utilisateur', validators=[DataRequired()])
+    username = StringField('Nom d\'utilisateur', validators=[DataRequired(), Length(max=64)])
     email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Mot de passe', validators=[DataRequired()])
+    password = PasswordField('Mot de passe', validators=[DataRequired(), Length(max=50)])
     password_repeat = PasswordField(
-        'Réécris ton mot de passe', validators=[DataRequired(), EqualTo('password')])
+        'Réécris ton mot de passe', validators=[DataRequired(), EqualTo('password'), Length(max=50)])
     register = SubmitField('Créer le compte')
 
     def validate_username(self, username):
@@ -33,9 +33,9 @@ class ResetPasswordRequestForm(FlaskForm):
     submit = SubmitField('Demander un changement de mot de passe')
 
 class ResetPasswordForm(FlaskForm):
-    password = PasswordField('Nouveau mot de passe', validators=[DataRequired()])
+    password = PasswordField('Nouveau mot de passe', validators=[DataRequired(), Length(max=50)])
     password_repeat = PasswordField(
-        'Réécris ton mot de passe', validators=[DataRequired(), EqualTo('password')]
+        'Réécris ton mot de passe', validators=[DataRequired(), EqualTo('password'), Length(max=50)]
         )
     submit = SubmitField('Changer mot de passe')
 
@@ -48,13 +48,13 @@ class GradeForm(FlaskForm):
                     ('Physique', 'Physique'), ('Sciences et Technologie', 'Sciences et Technologie'), ('Autre', 'Autre')]
 
     subject = SelectField('Matière', choices=subject_choices, validators=[InputRequired()])
-    mark = FloatField('Note (pourcentage)', validators=[DataRequired(), NumberRange(min=0)])
+    mark = FloatField('Note (pourcentage)', validators=[DataRequired(), NumberRange(min=0, max=200)])
     timestamp = DateField('Quand as-tu reçu la note?', format='%Y-%m-%d')
     submit = SubmitField('Ajouter')
 
 class RScoreForm(FlaskForm):
-    student_average = FloatField('Ta moyenne', default=80.0)
-    group_average = FloatField('Moyenne du groupe', default=80.0)
-    std_deviation = FloatField('Écart type', default=8.0)
-    average_mps = FloatField('Moyenne des MPS', default=80.0)
+    student_average = FloatField('Ta moyenne', validators=[NumberRange(min=0, max=200)], default=80.0)
+    group_average = FloatField('Moyenne du groupe', validators=[NumberRange(min=0, max=200)], default=80.0)
+    std_deviation = FloatField('Écart type', validators=[NumberRange(min=0, max=200)], default=8.0)
+    average_mps = FloatField('Moyenne des MPS', validators=[NumberRange(min=0, max=200)], default=80.0)
     submit = SubmitField('Envoyer')

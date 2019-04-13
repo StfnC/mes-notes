@@ -136,16 +136,20 @@ def cote_r():
 @login_required
 @app.route('/notes', methods=['GET', 'POST'])
 def notes():
-    user = User.query.filter_by(username=current_user.username).first()
-    page = request.args.get('page', 1, type=int)
-    grades = Grade.query.filter_by(user_id=user.id).order_by(Grade.timestamp.desc()).paginate(
-             page, app.config['GRADES_PER_PAGE'], False)
-    next_url = url_for('notes', page=grades.next_num) if grades.has_next else None
-    prev_url = url_for('notes', page=grades.prev_num) if grades.has_prev else None
-    for grade in grades.items:
-        if grade.normal_timestamp == None:
-            grade.set_normal_timestamp(grade.timestamp)
-    return render_template('notes.html', title='Notes', grades=grades.items, next_url=next_url, prev_url=prev_url)
+    if current_user.is_authenticated:
+        user = User.query.filter_by(username=current_user.username).first()
+        page = request.args.get('page', 1, type=int)
+        grades = Grade.query.filter_by(user_id=user.id).order_by(Grade.timestamp.desc()).paginate(
+                 page, app.config['GRADES_PER_PAGE'], False)
+        next_url = url_for('notes', page=grades.next_num) if grades.has_next else None
+        prev_url = url_for('notes', page=grades.prev_num) if grades.has_prev else None
+        for grade in grades.items:
+            if grade.normal_timestamp == None:
+                grade.set_normal_timestamp(grade.timestamp)
+        return render_template('notes.html', title='Notes', grades=grades.items, next_url=next_url, prev_url=prev_url)
+    else:
+        flash('Connecte-toi pour accéder à cette page')
+        return redirect(url_for('login'))
 
 @login_required
 @app.route('/update_grade/<grade_id>', methods=['GET', 'POST'])
